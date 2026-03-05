@@ -109,7 +109,7 @@ Spiderweb supports a run-oriented control path:
 - `agent.run.events`
 - `agent.run.list`
 
-Run/chat flows should use Acheron filesystem contract paths under `/agents/self/*`.
+Run/chat flows should use Acheron filesystem contract paths under `/global/*`.
 
 ### World Tools (Provider-Driven)
 

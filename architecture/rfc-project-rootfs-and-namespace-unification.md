@@ -92,7 +92,7 @@ In this model:
 Examples:
 
 - `mount`: attach `/nodes/local/fs/safe/Safe/ZiggyPR` to `/workspace`
-- `bind`: alias `/workspace` to `/agents/self/workspace`
+- `bind`: alias `/workspace` to `/projects/<project_id>/fs`
 
 Normative rule: `bind` must not grant access to any path/capability that is not already reachable through existing mounts and policy.
 

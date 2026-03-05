@@ -4,18 +4,18 @@ Memory is managed by the runtime memory store and exposed via Acheron service pa
 
 ## Access Paths
 
-Use `/agents/self/memory` control files instead of calling `memory_*` tools directly:
+Use `/global/memory` control files instead of calling `memory_*` tools directly:
 
-- `/agents/self/memory/control/create.json`
-- `/agents/self/memory/control/load.json`
-- `/agents/self/memory/control/versions.json`
-- `/agents/self/memory/control/mutate.json`
-- `/agents/self/memory/control/evict.json`
-- `/agents/self/memory/control/search.json`
+- `/global/memory/control/create.json`
+- `/global/memory/control/load.json`
+- `/global/memory/control/versions.json`
+- `/global/memory/control/mutate.json`
+- `/global/memory/control/evict.json`
+- `/global/memory/control/search.json`
 
 Results and status:
-- `/agents/self/memory/result.json`
-- `/agents/self/memory/status.json`
+- `/global/memory/result.json`
+- `/global/memory/status.json`
 
 ## Seeded Runtime Memories
 

@@ -43,7 +43,7 @@ Acheron WorldFS is the agent-visible filesystem exposed over the `acheron-1` pro
 
 Service discovery starts at:
 
-- `/agents/self/services/SERVICES.json`
+- `/global/services/SERVICES.json`
 
 Each service directory contains a contract set (`README.md`, `SCHEMA.json`, `CAPS.json`, `OPS.json`, `PERMISSIONS.json`, `STATUS.json`) plus `control/*.json`, `status.json`, and `result.json` for invocation.
 
@@ -58,23 +58,23 @@ Implemented services:
 
 ## Jobs and Events
 
-- Chat input path: `/agents/self/chat/control/input`
-- Job status path: `/agents/self/jobs/<job_id>/status.json`
-- Job result path: `/agents/self/jobs/<job_id>/result.txt`
+- Chat input path: `/global/chat/control/input`
+- Job status path: `/global/jobs/<job_id>/status.json`
+- Job result path: `/global/jobs/<job_id>/result.txt`
 
 Event wait flow:
 
-1. Write a selector to `/agents/self/events/control/wait.json`.
-2. Read `/agents/self/events/next.json` for the next matching event.
+1. Write a selector to `/global/events/control/wait.json`.
+2. Read `/global/events/next.json` for the next matching event.
 
 Supported event sources include:
-- `/agents/self/chat/control/input`
-- `/agents/self/jobs/<job_id>/status.json`
-- `/agents/self/events/sources/time/after/<ms>.json`
-- `/agents/self/events/sources/time/at/<unix_ms>.json`
-- `/agents/self/events/sources/agent/<parameter>.json`
-- `/agents/self/events/sources/hook/<parameter>.json`
-- `/agents/self/events/sources/user/<parameter>.json`
+- `/global/chat/control/input`
+- `/global/jobs/<job_id>/status.json`
+- `/global/events/sources/time/after/<ms>.json`
+- `/global/events/sources/time/at/<unix_ms>.json`
+- `/global/events/sources/agent/<parameter>.json`
+- `/global/events/sources/hook/<parameter>.json`
+- `/global/events/sources/user/<parameter>.json`
 
 ## Node Services
 

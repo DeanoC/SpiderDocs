@@ -4,7 +4,7 @@ An agent is considered “unhatched” when `HATCH.md` exists in its directory. 
 
 Typical hatching flow:
 
-1. Create agent directory (via `/agents/self/agents/control/create.json`).
+1. Create agent directory (via `/global/agents/control/create.json`).
 2. Populate identity files and `agent.json`.
 3. Remove or replace `HATCH.md` once the agent is ready.
 

@@ -1,6 +1,6 @@
 # Tool System (Runtime Implementation)
 
-Spiderweb exposes tools to providers through the runtime tool loop. There is no standalone `tool.list`/`tool.call` WebSocket API for clients. Tool execution is driven by provider tool calls during `session.send` and by Acheron control files under `/agents/self/*`.
+Spiderweb exposes tools to providers through the runtime tool loop. There is no standalone `tool.list`/`tool.call` WebSocket API for clients. Tool execution is driven by provider tool calls during `session.send` and by Acheron control files under `/global/*`.
 
 ## Provider Tool Loop
 
@@ -26,7 +26,7 @@ The runtime tool registry includes additional tools used by Acheron services:
 - `search_code`
 - `shell_exec`
 
-These are invoked via `/agents/self/search_code` and `/agents/self/terminal` control paths rather than being exposed directly to providers.
+These are invoked via `/global/search_code` and `/global/terminal` control paths rather than being exposed directly to providers.
 
 ## Constraints & Safeguards
 

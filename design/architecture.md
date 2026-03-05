@@ -14,7 +14,7 @@ This document reflects the runtime architecture as implemented in this repo.
 
 - **Acheron WorldFS** (`src/fsrpc_session.zig`)
   - Projects control-plane state into filesystem namespaces.
-  - Hosts agent services under `/agents/self/*`.
+  - Hosts agent services under `/global/*`.
 
 - **Control plane** (`src/fs_control_plane.zig`)
   - Projects, mounts, tokens, node registry, and workspace topology.

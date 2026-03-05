@@ -14,7 +14,7 @@ These map to the runtime memory store and event bus.
 
 ## Provider Exposure
 
-Provider tool schemas are intentionally restricted to `file_read`, `file_write`, and `file_list`. Brain tools remain internal and are surfaced via Acheron service paths (for example `/agents/self/memory`).
+Provider tool schemas are intentionally restricted to `file_read`, `file_write`, and `file_list`. Brain tools remain internal and are surfaced via Acheron service paths (for example `/global/memory`).
 
 ## Implementation Pointers
 

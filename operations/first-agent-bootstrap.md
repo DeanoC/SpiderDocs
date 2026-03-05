@@ -15,7 +15,7 @@ What this checks:
 1. `control.connect` returns `control.connect_ack` bound to `mother/system` with `bootstrap_only=true`.
 2. A real provider-backed Mother reply is produced over Acheron chat.
 3. First project is created with required `vision`.
-4. First non-system agent is created via Acheron (`/agents/self/agents/control/create.json`).
+4. First non-system agent is created via Acheron (`/global/agents/control/create.json`).
 5. Created agent has `agent.json` + `HATCH.md` scaffold.
 6. `control.session_attach` to the new project/agent succeeds.
 7. Post-bootstrap `control.connect` reports `bootstrap_only=false`.
@@ -44,7 +44,7 @@ Run:
 What this additionally checks:
 
 1. Mother performs project + agent provisioning from chat/tool execution (not only external control calls).
-2. Mother executes mount/bind/resolve through `/agents/self/mounts/control/*.json`.
+2. Mother executes mount/bind/resolve through `/global/mounts/control/*.json`.
 3. Script verifies resulting mount/bind state and successful `session_attach` to the Mother-created context.
 
 Modes:

@@ -4,18 +4,18 @@ This document summarizes the services that are currently implemented and how age
 
 ## Discovery Order
 
-1. `/agents/self/services/SERVICES.json` (agent namespace index)
+1. `/global/services/SERVICES.json` (agent namespace index)
 2. `/nodes/<node_id>/services/SERVICES.json` (node-scoped catalog, if advertised)
 3. Inspect service contract files before invoking:
    - `README.md`, `SCHEMA.json`, `TEMPLATE.json`, `CAPS.json`, `OPS.json`, `PERMISSIONS.json`, `STATUS.json`
 
 ## Agent Namespace Services (Implemented)
 
-These services are implemented by Spiderweb itself under `/agents/self`:
+These services are implemented by Spiderweb itself under `/global`:
 
-- `chat` (input under `/agents/self/chat/control/input`)
-- `jobs` (status/result under `/agents/self/jobs/<job_id>/*`)
-- `events` (wait/next under `/agents/self/events/*`)
+- `chat` (input under `/global/chat/control/input`)
+- `jobs` (status/result under `/global/jobs/<job_id>/*`)
+- `events` (wait/next under `/global/events/*`)
 - `memory` (control + result/status)
 - `web_search` (control + result/status)
 - `search_code` (control + result/status)
@@ -42,7 +42,7 @@ If a node advertises an empty service list, no fallback resources are exposed fo
 3. Write the payload to the invoke path.
 4. Read `status.json` and `result.json` until completion.
 
-Event waits can be driven through `/agents/self/events/control/wait.json` + `/agents/self/events/next.json`.
+Event waits can be driven through `/global/events/control/wait.json` + `/global/events/next.json`.
 
 ## Implementation Pointers
 
