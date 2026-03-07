@@ -1,68 +1,67 @@
-# Core Terminology
+# Spiders Terminology
 
-This document defines the canonical meanings of terms used in Spider Web.  
+This document defines the canonical meanings of terms used in the Spiders ecosystem.  
 These definitions are architectural, not colloquial.
 
 ---
 
-## Agent
+## Spider Monkey
 
-A process operating within the Spider Web namespace.
+An AI agent operating within the Spiderweb.
 
-An agent:
+A Spider Monkey:
 
-- Reads from the filesystem
-- Writes to the filesystem
-- Executes capabilities exposed through the namespace
-- Manages its own working context
+- Lives and works in a cocoon
+- Pulls on various threads to access venom that does work. 
+- Speaks the Acheron protocol for tool like access
+- Manages its own working context and memory
 
-An agent is not a wrapper around tools.  
-It is a first-class process within the distributed system.
+A spider monkey is not a wrapper around tools.  
+It is independent agent performing work within its Cocoon.
 
 ---
 
-## Namespace
+## Spiderweb
 
-The unified filesystem tree presented across machines and platforms.
+A Spiderweb is a server and works as a hub that connects the other elements.
+
+
+
+---
+## Workspace 
+
+A workspace is a namespace that binds various venom into a set a of threads that Spiders live in and operate on.
+
+It is often a project that Spider Monkeys work within. It may be physically distributed by appears a single namespace. 
+
+Each Workspace is represented by a namespace consisting of a root UNIX filesystem (Debian by default) with Acheron services and mounts threads for Spider Monkeys to use. 
 
 The namespace abstracts physical topology.  
+
 Local, remote, and cloud resources appear as part of the same structure.
 
 All capabilities, memory, and execution surfaces exist within the namespace.
 
 ---
 
-## Capability
+## Venom
 
-Any actionable resource exposed through the namespace.
+Any actionable resource or service exposed through spider web via Acheron
 
 Examples include:
-
 - Executable nodes
 - Data sources
 - Device interfaces
 - External services
 - Memory structures
 
-Capabilities are mounted into the namespace.  
-They are not registered as separate integration primitives.
+Venom are mounted into the Cocoon.  
 
 ---
 
-## Mount
+## Nodes
 
-The act of attaching a capability or resource into the namespace.
-
-Mounting expands the world visible to agents without modifying the agent itself.
-
-Mounting does not introduce new abstraction types.  
-It extends the existing model.
-
----
-
-## Node
-
-A machine or execution surface participating in the Spider Web system.
+A machine or execution surface that provide Venoms to the Spider Web.
 
 A node may:
 
@@ -75,7 +74,26 @@ Nodes are part of the physical topology.
 They are abstracted through the namespace.
 
 ---
+## Acheron
 
+Acheron is the protocol used to access and use Venoms through the Spiderweb.
+It is also the name of the stream of data, Acheron is a river of Venom that binds the Spiderweb to Spiders, Cocoon and Nodes.
+
+It is a filesystem rpc, similar in design to Plan9/STYX protocol. 
+
+All operations are defined in terms of files and directories. 
+
+Examples include:
+
+- Read
+- Write
+- List
+- 
+Primitives are intentionally minimal.  
+Complexity must emerge from composition.
+
+
+---
 ## Memory
 
 Durable, structured data stored within the namespace.
@@ -117,27 +135,3 @@ Agents manage their working set through:
 - Compaction
 - Eviction
 
----
-
-## Primitive
-
-A foundational operation guaranteed by Spider Web.
-
-Examples include:
-
-- Read
-- Write
-- List
-- Execute
-- Watch
-
-Primitives are intentionally minimal.  
-Complexity must emerge from composition.
-
----
-
-## Topology
-
-The physical distribution of nodes across devices, networks, and cloud infrastructure.
-
-Topology must not leak into agent logic.
