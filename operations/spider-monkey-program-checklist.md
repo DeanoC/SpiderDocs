@@ -42,9 +42,13 @@ Status legend:
 
 ## Phase 4: First Production Use Case
 
-### [ ] PR-SM7 (Spiderweb/SpiderApp): PR Review vertical slice
+### [~] PR-SM7 (Spiderweb/SpiderApp): PR Review vertical slice
 - Ingest PR context, run review missions, emit findings, optionally push fixes, and present operator-visible outcomes.
 - Keep merge manual.
+- Current branch scope:
+  - [x] Keep Spiderweb generic with a mission `contract` bundle pointing at use-case-owned workspace state.
+  - [ ] Add PR Review mission runner/orchestration on top of that contract.
+  - [ ] Surface PR Review-specific artifacts and outcomes in SpiderApp.
 
 ## Definition of done for this checklist
 

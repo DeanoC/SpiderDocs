@@ -42,14 +42,23 @@ Each mission record persists:
 
 - `mission_id`, `use_case`, `title`, `stage`, and `state`
 - bound `agent_id`, `project_id`, `run_id`, `workspace_root`, and `worktree_name`
+- an optional generic `contract` bundle:
+  - `contract_id`
+  - `context_path`
+  - `state_path`
+  - `artifact_root`
 - `created_by`, `created_at_ms`, `updated_at_ms`, and `last_heartbeat_ms`
 - `checkpoint_seq`, `recovery_count`, `recovery_reason`, `blocked_reason`, and `summary`
 - recent `artifacts`, recent `events`, and optional `pending_approval`
+
+The mission kernel stays generic. Use-case-specific state does not get new hard-coded Spiderweb fields; it lives in workspace or service-managed files referenced by the mission `contract`.
 
 Service-bound mission steps emit:
 
 - a `mission.service_invoked` event with service path, invoke path, request, result, status, artifact, and actor
 - a mission artifact entry, defaulting to the service `result.json` path unless overridden
+
+`create`, `checkpoint`, `invoke_service`, and state-transition writes may all update the mission `contract` bundle so long-running use cases can move or promote their workspace-backed state files without changing the kernel schema.
 
 Current states:
 

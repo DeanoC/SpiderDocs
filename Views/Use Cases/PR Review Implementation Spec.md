@@ -85,6 +85,22 @@ The PR review system should be built around a project-scoped controller with thr
 
 This keeps event collection, execution, and approval logic separate enough to debug and evolve.
 
+## Kernel Boundary
+
+Spiderweb should not persist PR-specific fields in its core mission schema.
+
+Instead, the Spiderweb mission record should stay generic and only hold:
+
+- `use_case`
+- normal mission lifecycle state
+- a generic mission `contract` bundle with:
+  - `contract_id`
+  - `context_path`
+  - `state_path`
+  - `artifact_root`
+
+PR Review specifics such as repo identity, PR metadata, review findings, validation output, thread state, and merge recommendation should live in the workspace or service-managed files referenced by that contract.
+
 ## Project Configuration Model
 
 Each project using this use case should have a PR review configuration record.
