@@ -50,6 +50,7 @@ Status legend:
   - [x] Seed agent-facing mission-contract and PR Review playbook content in the Spiderweb library/templates.
   - [x] Add generic `bootstrap_contract` support to materialize mission contract files under `/nodes/local/fs/...`.
   - [x] Add a thin `pr_review` venom that starts review missions and bootstraps their contract files on top of `missions`.
+  - [x] Add review-specific venom operations for state sync plus validation/review artifact recording.
   - [ ] Add deeper PR Review runner/orchestration on top of that venom and contract.
   - [ ] Surface PR Review-specific artifacts and outcomes in SpiderApp.
 

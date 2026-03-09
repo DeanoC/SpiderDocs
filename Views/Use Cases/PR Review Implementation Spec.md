@@ -104,6 +104,9 @@ PR Review specifics such as repo identity, PR metadata, review findings, validat
 The use case entrypoint should be a dedicated Venom layered above the generic mission Venom:
 
 - `/global/pr_review/control/start.json` creates the mission, derives contract paths, and bootstraps the initial context/state files
+- `/global/pr_review/control/sync.json` updates the PR state file and optional thread-action artifact
+- `/global/pr_review/control/record_validation.json` writes validation output and refreshes the latest validation state
+- `/global/pr_review/control/record_review.json` writes findings, recommendation, review-comment drafts, and related review artifacts
 - `/global/missions/*` remains the generic lifecycle substrate underneath it
 
 ## Project Configuration Model
