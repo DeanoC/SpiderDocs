@@ -1,45 +1,109 @@
-This use case is as a PR reviewer for one of more GitHub repos, a Spider Monkey attached to this project watching for new pr, reviews changes, does fixes, reply to other reviewers etc.
+# PR Review Project
 
-## Example workflow
+This use case defines Spider as an always-on pull request reviewer for one or more GitHub repositories.
 
-User tells the Spider Monkey, which GitHub repos to monitor for PR as part of the project vision
-Spider Monkey set each up
- - Clones the repo (main branch) into the workspace
- - Installs and toolchain or dependency
- - Does a test build of main as a baseline
- - Sets up a GitHub monitor for new PRs to ti (existing open PRs are considered new)
+The objective is to monitor incoming pull requests, review them with project-specific standards, handle follow-up discussion, apply fixes when appropriate, and merge once the branch is truly ready.
 
- When a new PR is detected:
- - Reads the PR 
- - Switches and pull that branch
- - Uses a specialist code review brain to review it
- - Writes the reviews to the GitHub repo
- When a new PR review thread/comment occurs
- - Assess it and decides on how to resolve it
- - If coding, starts a coding sub-brain (possible using an AI CLI tool)
- - when solves comment and resolve the thread
- - Re-review similar to a new PR
- - If no actionable review threads/comments, merge it into main
+Implementation detail and milestones are captured in [[PR Review Implementation Spec]].
 
-## Venoms
+## Goal
 
-### Timers (Required)
-Ability to wait for a specified time, before continuing
+Provide a Spider Monkey that can:
 
-### Interrupt (Required)
-Ability for a push notification to wait the Spider Monkey even if waiting for something else, if not waiting should show a Spider Monkey notification.
+- watch selected repositories for new pull requests and review activity
+- prepare each repository so reviews are grounded in a working local checkout
+- produce useful review feedback instead of shallow summaries
+- implement straightforward fixes in response to review threads or failing checks
+- merge ready pull requests without human babysitting when policy allows
 
-### GitHub (Required)
-A venom that can access GitHub including PR review threads and CI reports.
+## Inputs
 
-### Git (Required)
-A venom that allows full git access to clone branches and apply fixes needed for the review
+Spider needs:
 
-### Terminal Execution (Required)
-Ability to kick off builds and see results
+- the repositories to monitor
+- the default branch and merge policy for each repo
+- review standards, coding standards, and any repo-specific rules
+- setup steps needed to build and test the repository locally
 
-### AI CLI coding (Optional)
-Ability to fire up a CLI AI program and inform and monitor whilst it does any coding required
+## Example Workflow
 
-### Package Installer (Optional)
-Able to use the package installer of the project root system to install tools required (compilers, AI CLI tools etc.)
+### Initial setup
+
+1. User tells Spider which GitHub repositories belong to the project.
+2. Spider clones each repository at the default branch into the workspace.
+3. Spider installs the required dependencies and toolchain.
+4. Spider runs a baseline build and test pass so future failures can be attributed to the PR rather than a broken local environment.
+5. Spider starts monitoring for new pull requests and new review activity. Existing open PRs can be treated as new on first import.
+
+### When a new pull request appears
+
+1. Spider reads the PR description, linked issues, changed files, and current CI state.
+2. Spider fetches and checks out the PR branch locally.
+3. Spider runs targeted review checks such as tests, linting, static analysis, and any repo-specific review scripts.
+4. Spider performs a code review focused on correctness, regressions, security, maintainability, and missing validation.
+5. Spider publishes review feedback to GitHub in the appropriate form: approval, request changes, or line comments.
+
+### When a new review thread or comment appears
+
+1. Spider classifies the comment as informational, a question, or an actionable change request.
+2. If code changes are required, Spider creates or updates a local branch, applies the fix, reruns the relevant checks, and pushes the update.
+3. Spider replies in the thread with the outcome or asks for clarification if the request is ambiguous.
+4. Spider resolves the thread when the underlying issue is actually addressed.
+5. Spider performs another pass over the PR to ensure the new change did not create follow-on problems.
+
+### When CI fails
+
+1. Spider inspects the failing check output and identifies whether the issue is environmental, flaky, or caused by the branch.
+2. If the failure is actionable and within scope, Spider applies a fix and reruns the relevant validation.
+3. If the failure is external or blocked, Spider reports the issue clearly instead of guessing.
+
+### When the PR is ready
+
+1. Spider verifies that required reviews are satisfied, CI is green, and no unresolved threads remain.
+2. Spider checks branch protection and merge policy.
+3. Spider merges the PR into the default branch when allowed, then reports the result.
+
+## Required Venoms / Capabilities
+
+### Timers
+
+Wait for new PRs, CI completion, and external responses without losing task state.
+
+### Interrupts and notifications
+
+Wake the Spider Monkey when GitHub events occur and surface important changes even if it is waiting on something else.
+
+### GitHub access
+
+Read pull requests, review threads, comments, commit statuses, and branch protection rules, then write reviews and replies back.
+
+### Git access
+
+Clone repositories, fetch branches, create commits, push fixes, and merge according to policy.
+
+### Terminal execution
+
+Run project setup, tests, linting, build steps, and any review-specific tooling.
+
+### AI coding worker integration
+
+Optionally delegate bounded coding tasks needed to address review comments or CI failures.
+
+### Package and tool installer
+
+Install compilers, SDKs, and CLI tools needed to review the repository correctly.
+
+## Guardrails
+
+- Do not merge if required reviews, required checks, or branch protections are not satisfied.
+- Do not resolve review threads unless the underlying issue has actually been addressed.
+- Prefer specific actionable feedback over generic praise or noise.
+- Escalate ambiguous product decisions and large design disputes instead of forcing a code change.
+- Avoid self-reinforcing loops where Spider both authors major changes and silently approves them without an explicit policy allowing that.
+
+## Success Criteria
+
+- New PRs receive timely, technically useful review feedback.
+- Review conversations progress toward resolution without human coordination for every step.
+- Straightforward fixes and CI issues are handled automatically.
+- Ready PRs merge cleanly while unsafe or unclear PRs remain blocked with an explicit reason.
