@@ -116,7 +116,7 @@ Suggested fields:
       "repo_key": "owner/repo",
       "host": "github",
       "default_branch": "main",
-      "local_checkout_path": "/workspace/pr-review/repos/owner__repo",
+      "local_checkout_path": "/nodes/local/fs/pr-review/repos/owner__repo",
       "setup": {
         "install": ["pnpm install --frozen-lockfile"],
         "baseline_checks": ["pnpm test", "pnpm lint"]
@@ -148,7 +148,7 @@ The review worker needs stable project-owned working paths for clones, outputs, 
 Proposed project rootfs layout:
 
 ```text
-/workspace/
+/nodes/local/fs/
   pr-review/
     repos/
       owner__repo/
@@ -166,7 +166,7 @@ Proposed project rootfs layout:
 
 Namespace usage around that workspace:
 
-- `/workspace/...` for project-owned local files
+- `/nodes/local/fs/...` for project-owned local files
 - `/global/projects/control/*.json` for project lifecycle/status
 - `/global/memory/control/*.json` for durable compact summaries and search
 - `/global/events/...` for waiting on GitHub or timer events
@@ -281,7 +281,7 @@ Suggested transitions:
 
 For each configured repository:
 
-1. Clone or refresh the default branch into `/workspace/pr-review/repos/...`
+1. Clone or refresh the default branch into `/nodes/local/fs/pr-review/repos/...`
 2. Install required dependencies and tools
 3. Run baseline validation commands
 4. Persist onboarding result and failure details
@@ -441,8 +441,8 @@ Suggested summary fields:
 
 Suggested outputs:
 
-- machine-readable JSON state in `/workspace/pr-review/state/...`
-- human-readable markdown summaries in `/workspace/pr-review/runs/pr-<n>/summary.md`
+- machine-readable JSON state in `/nodes/local/fs/pr-review/state/...`
+- human-readable markdown summaries in `/nodes/local/fs/pr-review/runs/pr-<n>/summary.md`
 - searchable compact summaries in runtime memory
 
 ## Failure Handling

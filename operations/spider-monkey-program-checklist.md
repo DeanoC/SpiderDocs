@@ -48,6 +48,7 @@ Status legend:
 - Current branch scope:
   - [x] Keep Spiderweb generic with a mission `contract` bundle pointing at use-case-owned workspace state.
   - [x] Seed agent-facing mission-contract and PR Review playbook content in the Spiderweb library/templates.
+  - [x] Add generic `bootstrap_contract` support to materialize mission contract files under `/nodes/local/fs/...`.
   - [ ] Add PR Review mission runner/orchestration on top of that contract.
   - [ ] Surface PR Review-specific artifacts and outcomes in SpiderApp.
 

@@ -11,6 +11,7 @@ Use mission control files instead of ad-hoc runtime state:
 - `/global/missions/control/get.json`
 - `/global/missions/control/heartbeat.json`
 - `/global/missions/control/checkpoint.json`
+- `/global/missions/control/bootstrap_contract.json`
 - `/global/missions/control/invoke_service.json`
 - `/global/missions/control/recover.json`
 - `/global/missions/control/request_approval.json`
@@ -26,6 +27,8 @@ Results and status:
 
 - `/global/missions/result.json`
 - `/global/missions/status.json`
+
+`bootstrap_contract.json` materializes JSON-backed contract files and artifact directories under the canonical local workspace mount (`/nodes/local/fs/...`) using Spiderweb's configured `local_fs_export_root`.
 
 `invoke_service.json` is the bridge from mission steps to workspace-mounted service venoms. Provide:
 
@@ -58,7 +61,7 @@ Service-bound mission steps emit:
 - a `mission.service_invoked` event with service path, invoke path, request, result, status, artifact, and actor
 - a mission artifact entry, defaulting to the service `result.json` path unless overridden
 
-`create`, `checkpoint`, `invoke_service`, and state-transition writes may all update the mission `contract` bundle so long-running use cases can move or promote their workspace-backed state files without changing the kernel schema.
+`create`, `checkpoint`, `bootstrap_contract`, `invoke_service`, and state-transition writes may all update the mission `contract` bundle so long-running use cases can move or promote their workspace-backed state files without changing the kernel schema.
 
 Current states:
 
