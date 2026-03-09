@@ -36,7 +36,7 @@ Status legend:
 
 ## Phase 3: Operator Visibility
 
-### [ ] PR-SM6 (SpiderApp): mission and approval UX
+### [x] PR-SM6 (SpiderApp): mission and approval UX
 - Add mission list/detail, approval queue, and recovery visibility.
 - Surface persona pack and agent identity ownership details where useful.
 
