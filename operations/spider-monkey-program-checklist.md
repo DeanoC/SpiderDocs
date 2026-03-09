@@ -20,7 +20,7 @@ Status legend:
 - Keep agent-owned identity/personality memories mutable after initial seed.
 - Document the code-vs-memory ownership boundaries.
 
-### [ ] PR-SM3 (Spiderweb): mission state foundation
+### [x] PR-SM3 (Spiderweb): mission state foundation
 - Add persistent mission records, state transitions, and recovery metadata.
 - Add approval-gated transitions for high-impact actions.
 
