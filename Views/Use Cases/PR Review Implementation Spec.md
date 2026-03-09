@@ -36,6 +36,8 @@ This spec assumes the current Spider runtime model described elsewhere in this r
 - agent-visible paths should use canonical namespace paths only, primarily `/agents`, `/nodes`, and `/global`
 - project lifecycle and topology are managed through `/global/projects/control/*.json`
 - memory is accessed through `/global/memory/control/*.json`
+- repository checkout and diff inspection should use `/global/git/control/*.json`
+- provider PR synchronization and top-level review publication should use `/global/github_pr/control/*.json`
 - terminal execution is performed through `/global/terminal/...`
 - asynchronous waiting should use `/global/events/control/wait.json` and `/global/events/next.json`
 - provider-exposed tools are intentionally narrow, so orchestration should happen through filesystem services rather than ad hoc tool APIs
@@ -104,9 +106,10 @@ PR Review specifics such as repo identity, PR metadata, review findings, validat
 The use case entrypoint should be a dedicated Venom layered above the generic mission Venom:
 
 - `/global/pr_review/control/start.json` creates the mission, derives contract paths, and bootstraps the initial context/state files
-- `/global/pr_review/control/sync.json` updates the PR state file and optional thread-action artifact
+- `/global/pr_review/control/sync.json` updates the PR state file and can orchestrate provider sync, checkout sync, repo status capture, and diff capture through the underlying `github_pr` and `git` Venoms while persisting durable service snapshots under the review `artifact_root`
 - `/global/pr_review/control/record_validation.json` writes validation output and refreshes the latest validation state
-- `/global/pr_review/control/record_review.json` writes findings, recommendation, review-comment drafts, and related review artifacts
+- `/global/pr_review/control/record_review.json` writes findings, recommendation, review-comment drafts, related review artifacts, and can optionally publish the top-level review through `github_pr`
+- `/global/git/*` and `/global/github_pr/*` provide the repo/provider actions that PR Review orchestration should call instead of dropping to raw shell glue
 - `/global/missions/*` remains the generic lifecycle substrate underneath it
 
 ## Project Configuration Model
