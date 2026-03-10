@@ -83,10 +83,10 @@ If a node advertises an explicit empty catalog, no fallback resources are expose
 
 Project lifecycle and topology are managed through:
 
-- `/global/projects/control/list.json`
-- `/global/projects/control/get.json`
-- `/global/projects/control/up.json`
-- `/global/projects/control/invoke.json`
+- `/global/workspaces/control/list.json`
+- `/global/workspaces/control/get.json`
+- `/global/workspaces/control/up.json`
+- `/global/workspaces/control/invoke.json`
 
 Project state such as `workspace_status`, `desired_mounts`, `actual_mounts`, `drift`, and reconcile health is surfaced through the project-control APIs rather than a public `/projects/<project_id>` root.
 

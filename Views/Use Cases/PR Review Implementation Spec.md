@@ -34,7 +34,7 @@ The first usable slice should support a single GitHub repository and a single Sp
 This spec assumes the current Spider runtime model described elsewhere in this repo:
 
 - agent-visible paths should use canonical namespace paths only, primarily `/agents`, `/nodes`, and project-bound `/services`
-- project lifecycle and topology are managed through `/global/projects/control/*.json`
+- workspace lifecycle and topology are managed through `/global/workspaces/control/*.json`
 - memory is accessed through `/global/memory/control/*.json`
 - repository checkout and diff inspection should use `/services/git/control/*.json` when the workspace binds it
 - provider PR synchronization and top-level review publication should use `/services/github_pr/control/*.json` when the workspace binds it
@@ -181,7 +181,7 @@ Proposed project rootfs layout:
 Namespace usage around that workspace:
 
 - `/nodes/local/fs/...` for project-owned local files
-- `/global/projects/control/*.json` for project lifecycle/status
+- `/global/workspaces/control/*.json` for workspace lifecycle/status
 - `/global/memory/control/*.json` for durable compact summaries and search
 - `/global/events/...` for waiting on GitHub or timer events
 - `/global/terminal/...` for shell execution
