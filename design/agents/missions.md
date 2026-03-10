@@ -1,39 +1,39 @@
 # Missions (Current)
 
-Spiderweb now exposes a first-class `/global/missions` namespace backed by a persistent mission store.
+Spiderweb now exposes a first-class mission venom backed by a persistent mission store. Workspace-facing agents should prefer `/services/missions` when the active project binds it; `/global/missions` remains the current local-service origin.
 
 ## Access Paths
 
 Use mission control files instead of ad-hoc runtime state:
 
-- `/global/missions/control/create.json`
-- `/global/missions/control/list.json`
-- `/global/missions/control/get.json`
-- `/global/missions/control/heartbeat.json`
-- `/global/missions/control/checkpoint.json`
-- `/global/missions/control/bootstrap_contract.json`
-- `/global/missions/control/invoke_service.json`
-- `/global/missions/control/recover.json`
-- `/global/missions/control/request_approval.json`
-- `/global/missions/control/approve.json`
-- `/global/missions/control/reject.json`
-- `/global/missions/control/resume.json`
-- `/global/missions/control/block.json`
-- `/global/missions/control/complete.json`
-- `/global/missions/control/fail.json`
-- `/global/missions/control/cancel.json`
+- `/services/missions/control/create.json`
+- `/services/missions/control/list.json`
+- `/services/missions/control/get.json`
+- `/services/missions/control/heartbeat.json`
+- `/services/missions/control/checkpoint.json`
+- `/services/missions/control/bootstrap_contract.json`
+- `/services/missions/control/invoke_service.json`
+- `/services/missions/control/recover.json`
+- `/services/missions/control/request_approval.json`
+- `/services/missions/control/approve.json`
+- `/services/missions/control/reject.json`
+- `/services/missions/control/resume.json`
+- `/services/missions/control/block.json`
+- `/services/missions/control/complete.json`
+- `/services/missions/control/fail.json`
+- `/services/missions/control/cancel.json`
 
 Results and status:
 
-- `/global/missions/result.json`
-- `/global/missions/status.json`
+- `/services/missions/result.json`
+- `/services/missions/status.json`
 
 `bootstrap_contract.json` materializes JSON-backed contract files and artifact directories under the canonical local workspace mount (`/nodes/local/fs/...`) using Spiderweb's configured `local_fs_export_root`.
 
 `invoke_service.json` is the bridge from mission steps to workspace-mounted service venoms. Provide:
 
 - `mission_id`
-- `service_path` for the venom root, for example `/global/memory`
+- `service_path` for the venom root, for example `/services/git` or `/services/github_pr`
 - either a raw `payload` / `request` body or an `op` plus `arguments`
 - optional `invoke_path` when the discovered service exposes a non-default invoke target
 

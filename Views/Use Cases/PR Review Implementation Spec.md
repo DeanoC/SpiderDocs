@@ -191,9 +191,9 @@ The important rule is that all agent-facing paths remain canonical namespace pat
 
 Current control surface in the feature branch:
 
-- `/global/pr_review/control/configure_repo.json`
-- `/global/pr_review/control/get_repo.json`
-- `/global/pr_review/control/list_repos.json`
+- `/services/pr_review/control/configure_repo.json`
+- `/services/pr_review/control/get_repo.json`
+- `/services/pr_review/control/list_repos.json`
 
 Those operations own the canonical `repos.json` file under `/nodes/local/fs/pr-review/state/repos.json`.
 
@@ -261,7 +261,7 @@ The implementation should normalize incoming signals into a small event set:
 Suggested event flow:
 
 1. GitHub adapter receives a webhook, poll result, or CLI query result.
-2. Adapter writes the event to `/global/github_pr/control/ingest_event.json`.
+2. Adapter writes the event to `/services/github_pr/control/ingest_event.json`.
 3. `github_pr` normalizes the event, emits it on `/global/events/sources/agent/github_pr.json`, and auto-creates or reuses the matching `pr_review` mission.
 4. PR Review sub-brain waits using `/global/events/control/wait.json`.
 5. Matching event wakes the task and loads current PR state.
@@ -583,10 +583,10 @@ The purpose of these seeded evals is to lock in the mission/service behavior bef
 
 The current implementation now reaches the intended `M3` thin-slice boundary:
 
-1. manually load one PR through `/global/pr_review/control/intake.json`
-2. sync provider and checkout state through `/global/pr_review/control/sync.json`
-3. run configured local review commands through `/global/pr_review/control/run_validation.json`
-4. publish a structured top-level GitHub review through `/global/pr_review/control/record_review.json` with `publish_review`
+1. manually load one PR through `/services/pr_review/control/intake.json`
+2. sync provider and checkout state through `/services/pr_review/control/sync.json`
+3. run configured local review commands through `/services/pr_review/control/run_validation.json`
+4. publish a structured top-level GitHub review through `/services/pr_review/control/record_review.json` with `publish_review`
 
 ## Open Questions
 
