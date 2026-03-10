@@ -33,6 +33,7 @@ Status legend:
 ### [x] PR-SM5 (Spiderweb): mission-to-service binding
 - Bind mission steps to service venoms instead of hard-coded workflow branches.
 - Record artifacts and step events uniformly.
+- Add project templates plus effective workspace service discovery so agents can inspect `/services/*` rather than assuming every local venom is always exposed.
 
 ## Phase 3: Operator Visibility
 
@@ -62,6 +63,7 @@ Status legend:
   - [x] Add a runtime-server agentic eval that drives repo onboarding plus config-backed PR intake over Acheron strict-mode filesystem tools.
   - [x] Add `/global/pr_review/control/advance.json` as the deterministic runner step so Spider Monkey can resume missions, wait on the shared event feed, and advance sync/validation without hard-coding review judgment into the kernel.
   - [x] Add `/global/pr_review/control/save_draft.json` plus draft revision artifacts so Spider Monkey can keep evolving findings and recommendation drafts inside the workspace between events.
+  - [x] Add `/global/pr_review/control/draft_review.json` so Spider Monkey can take the `ready_for_review` handoff, inspect the mission contract/artifacts, and persist a real draft revision through Acheron.
 
 ## Definition of done for this checklist
 

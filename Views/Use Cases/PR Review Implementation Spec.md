@@ -33,11 +33,11 @@ The first usable slice should support a single GitHub repository and a single Sp
 
 This spec assumes the current Spider runtime model described elsewhere in this repo:
 
-- agent-visible paths should use canonical namespace paths only, primarily `/agents`, `/nodes`, and `/global`
+- agent-visible paths should use canonical namespace paths only, primarily `/agents`, `/nodes`, and project-bound `/services`
 - project lifecycle and topology are managed through `/global/projects/control/*.json`
 - memory is accessed through `/global/memory/control/*.json`
-- repository checkout and diff inspection should use `/global/git/control/*.json`
-- provider PR synchronization and top-level review publication should use `/global/github_pr/control/*.json`
+- repository checkout and diff inspection should use `/services/git/control/*.json` when the workspace binds it
+- provider PR synchronization and top-level review publication should use `/services/github_pr/control/*.json` when the workspace binds it
 - terminal execution is performed through `/global/terminal/...`
 - asynchronous waiting should use `/global/events/control/wait.json` and `/global/events/next.json`
 - provider-exposed tools are intentionally narrow, so orchestration should happen through filesystem services rather than ad hoc tool APIs
@@ -105,17 +105,20 @@ PR Review specifics such as repo identity, PR metadata, review findings, validat
 
 The use case entrypoint should be a dedicated Venom layered above the generic mission Venom:
 
-- `/global/github_pr/control/ingest_event.json` normalizes a GitHub PR event, emits `/global/events/sources/agent/github_pr.json`, and auto-creates or reuses the matching `pr_review` mission using a stable run id
-- `/global/pr_review/control/intake.json` manually loads one provider PR into a fresh mission, bootstraps the contract files, and can persist an initial provider sync capture
-- `/global/pr_review/control/start.json` creates the mission, derives contract paths, and bootstraps the initial context/state files
-- `/global/pr_review/control/advance.json` is the deterministic runner step: it can resume the mission, wait on `/global/events/...`, drive the next sync/validation pass, and return a `runner.status` / `runner.next_action` pair for Spider Monkey to interpret
-- `/global/pr_review/control/sync.json` updates the PR state file and can orchestrate provider sync, checkout sync, repo status capture, and diff capture through the underlying `github_pr` and `git` Venoms while persisting durable service snapshots under the review `artifact_root`
-- `/global/pr_review/control/run_validation.json` opens a terminal session, runs configured review commands through `/global/terminal`, records per-command service captures, and writes a structured validation artifact with exit-code-backed pass/fail status
-- `/global/pr_review/control/record_validation.json` writes validation output and refreshes the latest validation state
-- `/global/pr_review/control/save_draft.json` writes the agent's evolving findings/recommendation draft to the latest draft files and also snapshots each revision under a draft history directory
-- `/global/pr_review/control/record_review.json` writes findings, recommendation, review-comment drafts, related review artifacts, and can optionally publish the top-level review through `github_pr`
-- `/global/git/*` and `/global/github_pr/*` provide the repo/provider actions that PR Review orchestration should call instead of dropping to raw shell glue
-- `/global/missions/*` remains the generic lifecycle substrate underneath it
+- `/services/github_pr/control/ingest_event.json` normalizes a GitHub PR event, emits `/global/events/sources/agent/github_pr.json`, and auto-creates or reuses the matching `pr_review` mission using a stable run id
+- `/services/pr_review/control/intake.json` manually loads one provider PR into a fresh mission, bootstraps the contract files, and can persist an initial provider sync capture
+- `/services/pr_review/control/start.json` creates the mission, derives contract paths, and bootstraps the initial context/state files
+- `/services/pr_review/control/advance.json` is the deterministic runner step: it can resume the mission, wait on `/global/events/...`, drive the next sync/validation pass, and return a `runner.status` / `runner.next_action` pair for Spider Monkey to interpret
+- `/services/pr_review/control/sync.json` updates the PR state file and can orchestrate provider sync, checkout sync, repo status capture, and diff capture through the underlying `github_pr` and `git` Venoms while persisting durable service snapshots under the review `artifact_root`
+- `/services/pr_review/control/run_validation.json` opens a terminal session, runs configured review commands through `/global/terminal`, records per-command service captures, and writes a structured validation artifact with exit-code-backed pass/fail status
+- `/services/pr_review/control/record_validation.json` writes validation output and refreshes the latest validation state
+- `/services/pr_review/control/draft_review.json` hands the mission off to Spider Monkey for one mission-aware drafting step: the agent reads the contract/state/artifacts and is expected to persist the next draft revision through `save_draft.json`
+- `/services/pr_review/control/save_draft.json` writes the agent's evolving findings/recommendation draft to the latest draft files and also snapshots each revision under a draft history directory
+- `/services/pr_review/control/record_review.json` writes findings, recommendation, review-comment drafts, related review artifacts, and can optionally publish the top-level review through `github_pr`
+- `/services/git/*` and `/services/github_pr/*` provide the repo/provider actions that PR Review orchestration should call instead of dropping to raw shell glue
+- `/services/missions/*` remains the generic lifecycle substrate underneath it when that workspace template binds it
+
+These `/services/*` paths are the project-facing bind targets. The current local implementation still originates many of those Venoms under `/global/*`, but agents should prefer the bound workspace paths whenever they exist.
 
 ## Project Configuration Model
 
