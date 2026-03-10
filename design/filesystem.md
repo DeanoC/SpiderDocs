@@ -24,6 +24,12 @@ Spiderweb exposes a unified project workspace by routing file operations over We
   - `/services/github_pr`
   - `/services/missions`
   - `/services/pr_review`
+  - `/services/terminal`
+  - `/services/events`
+  - `/services/library`
+  - `/services/memory`
+  - `/services/search_code`
+  - `/services/web_search`
 
 The intent is that `/nodes/*` remains the catalog/origin view, while `/services/*` becomes the project-specific use surface for local services.
 
