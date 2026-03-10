@@ -26,7 +26,7 @@ These Venoms are implemented by Spiderweb itself under `/global`:
 - `sub_brains` (sub-brain list/upsert/delete)
 - `agents` (agent list/create)
 - `missions` (persistent mission lifecycle + service bridge)
-- `pr_review` (thin PR Review use-case veneer layered over `missions`, exposing `start`, `sync`, `record_validation`, and `record_review`, with `sync` and `record_review` able to orchestrate underlying `git` / `github_pr` service calls)
+- `pr_review` (thin PR Review use-case veneer layered over `missions`, exposing `intake`, `start`, `sync`, `run_validation`, `record_validation`, and `record_review`, with orchestration routed through `git`, `github_pr`, and `terminal`)
 
 Each Venom exposes `control/*.json` endpoints plus `status.json` and `result.json` for invocation results.
 

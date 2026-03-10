@@ -105,8 +105,10 @@ PR Review specifics such as repo identity, PR metadata, review findings, validat
 
 The use case entrypoint should be a dedicated Venom layered above the generic mission Venom:
 
+- `/global/pr_review/control/intake.json` manually loads one provider PR into a fresh mission, bootstraps the contract files, and can persist an initial provider sync capture
 - `/global/pr_review/control/start.json` creates the mission, derives contract paths, and bootstraps the initial context/state files
 - `/global/pr_review/control/sync.json` updates the PR state file and can orchestrate provider sync, checkout sync, repo status capture, and diff capture through the underlying `github_pr` and `git` Venoms while persisting durable service snapshots under the review `artifact_root`
+- `/global/pr_review/control/run_validation.json` opens a terminal session, runs configured review commands through `/global/terminal`, records per-command service captures, and writes a structured validation artifact with exit-code-backed pass/fail status
 - `/global/pr_review/control/record_validation.json` writes validation output and refreshes the latest validation state
 - `/global/pr_review/control/record_review.json` writes findings, recommendation, review-comment drafts, related review artifacts, and can optionally publish the top-level review through `github_pr`
 - `/global/git/*` and `/global/github_pr/*` provide the repo/provider actions that PR Review orchestration should call instead of dropping to raw shell glue
@@ -559,10 +561,22 @@ This is enough to prove that Spider can operate as a real PR reviewer before att
 
 The current branch now includes seeded PR Review regression scenarios in Spiderweb test coverage. These are not the final long-running agent harness, but they provide a first agentic contract layer for the use case:
 
+- manual provider intake bootstrapping through the `pr_review` Venom
+- validation success propagation through terminal-backed review commands
+- validation failure propagation on non-zero command exit codes
 - happy-path review setup with provider sync, checkout sync, repo status capture, diff capture, and dry-run top-level review publication
 - failure-path checkout sync propagation, ensuring the `pr_review` Venom reports a failed status while still persisting the service capture artifact for operator or agent diagnosis
 
 The purpose of these seeded evals is to lock in the mission/service behavior before the fully autonomous Spider Monkey review loop is layered on top.
+
+## Thin Slice Status
+
+The current implementation now reaches the intended `M3` thin-slice boundary:
+
+1. manually load one PR through `/global/pr_review/control/intake.json`
+2. sync provider and checkout state through `/global/pr_review/control/sync.json`
+3. run configured local review commands through `/global/pr_review/control/run_validation.json`
+4. publish a structured top-level GitHub review through `/global/pr_review/control/record_review.json` with `publish_review`
 
 ## Open Questions
 

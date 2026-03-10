@@ -42,19 +42,20 @@ Status legend:
 
 ## Phase 4: First Production Use Case
 
-### [~] PR-SM7 (Spiderweb/SpiderApp): PR Review vertical slice
+### [x] PR-SM7 (Spiderweb/SpiderApp): PR Review vertical slice
 - Ingest PR context, run review missions, emit findings, optionally push fixes, and present operator-visible outcomes.
 - Keep merge manual.
 - Current branch scope:
   - [x] Keep Spiderweb generic with a mission `contract` bundle pointing at use-case-owned workspace state.
   - [x] Seed agent-facing mission-contract and PR Review playbook content in the Spiderweb library/templates.
   - [x] Add generic `bootstrap_contract` support to materialize mission contract files under `/nodes/local/fs/...`.
-  - [x] Add a thin `pr_review` venom that starts review missions and bootstraps their contract files on top of `missions`.
+  - [x] Add a thin `pr_review` venom that can intake a PR from provider metadata, start review missions, and bootstrap their contract files on top of `missions`.
   - [x] Add review-specific venom operations for state sync plus validation/review artifact recording.
+  - [x] Add `run_validation` so configured review commands execute through the terminal venom and persist durable service captures plus pass/fail status.
   - [x] Add first-class `git` and `github_pr` service venoms for checkout sync, diff inspection, provider PR sync, and top-level review publication dry runs.
   - [x] Add deeper PR Review runner/orchestration on top of that venom and contract.
   - [x] Surface PR Review-specific artifacts and outcomes in SpiderApp.
-  - [x] Add seeded PR Review eval scenarios covering happy-path service orchestration/publication and checkout-failure propagation.
+  - [x] Add seeded PR Review eval scenarios covering intake, validation success, validation failure, happy-path service orchestration/publication, and checkout-failure propagation.
 
 ## Definition of done for this checklist
 
