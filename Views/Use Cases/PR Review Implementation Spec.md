@@ -555,6 +555,15 @@ That yields a usable demonstration:
 
 This is enough to prove that Spider can operate as a real PR reviewer before attempting auto-fix and merge automation.
 
+## Current Seeded Eval Coverage
+
+The current branch now includes seeded PR Review regression scenarios in Spiderweb test coverage. These are not the final long-running agent harness, but they provide a first agentic contract layer for the use case:
+
+- happy-path review setup with provider sync, checkout sync, repo status capture, diff capture, and dry-run top-level review publication
+- failure-path checkout sync propagation, ensuring the `pr_review` Venom reports a failed status while still persisting the service capture artifact for operator or agent diagnosis
+
+The purpose of these seeded evals is to lock in the mission/service behavior before the fully autonomous Spider Monkey review loop is layered on top.
+
 ## Open Questions
 
 - Should GitHub intake start with webhooks, polling, or `gh`-driven sync?
