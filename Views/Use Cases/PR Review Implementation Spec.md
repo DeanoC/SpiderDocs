@@ -108,9 +108,11 @@ The use case entrypoint should be a dedicated Venom layered above the generic mi
 - `/global/github_pr/control/ingest_event.json` normalizes a GitHub PR event, emits `/global/events/sources/agent/github_pr.json`, and auto-creates or reuses the matching `pr_review` mission using a stable run id
 - `/global/pr_review/control/intake.json` manually loads one provider PR into a fresh mission, bootstraps the contract files, and can persist an initial provider sync capture
 - `/global/pr_review/control/start.json` creates the mission, derives contract paths, and bootstraps the initial context/state files
+- `/global/pr_review/control/advance.json` is the deterministic runner step: it can resume the mission, wait on `/global/events/...`, drive the next sync/validation pass, and return a `runner.status` / `runner.next_action` pair for Spider Monkey to interpret
 - `/global/pr_review/control/sync.json` updates the PR state file and can orchestrate provider sync, checkout sync, repo status capture, and diff capture through the underlying `github_pr` and `git` Venoms while persisting durable service snapshots under the review `artifact_root`
 - `/global/pr_review/control/run_validation.json` opens a terminal session, runs configured review commands through `/global/terminal`, records per-command service captures, and writes a structured validation artifact with exit-code-backed pass/fail status
 - `/global/pr_review/control/record_validation.json` writes validation output and refreshes the latest validation state
+- `/global/pr_review/control/save_draft.json` writes the agent's evolving findings/recommendation draft to the latest draft files and also snapshots each revision under a draft history directory
 - `/global/pr_review/control/record_review.json` writes findings, recommendation, review-comment drafts, related review artifacts, and can optionally publish the top-level review through `github_pr`
 - `/global/git/*` and `/global/github_pr/*` provide the repo/provider actions that PR Review orchestration should call instead of dropping to raw shell glue
 - `/global/missions/*` remains the generic lifecycle substrate underneath it
@@ -128,18 +130,12 @@ Suggested fields:
   "repositories": [
     {
       "repo_key": "owner/repo",
-      "host": "github",
+      "provider": "github",
       "default_branch": "main",
-      "local_checkout_path": "/nodes/local/fs/pr-review/repos/owner__repo",
-      "setup": {
-        "install": ["pnpm install --frozen-lockfile"],
-        "baseline_checks": ["pnpm test", "pnpm lint"]
-      },
-      "review": {
-        "commands": ["pnpm test", "pnpm lint"],
-        "auto_fix_allowed": true,
-        "merge_allowed": true
-      }
+      "checkout_path": "/nodes/local/fs/pr-review/repos/owner__repo",
+      "review_policy_paths": ["/nodes/local/fs/policy/pr-review.md"],
+      "default_review_commands": ["pnpm test", "pnpm lint"],
+      "auto_intake": true
     }
   ],
   "approval_policy": {
@@ -152,7 +148,8 @@ Suggested fields:
 
 Notes:
 
-- `local_checkout_path` is a namespace path inside the project rootfs, not a host-internal path.
+- `checkout_path` is the canonical stored field in the current branch. `local_checkout_path` can still be accepted as an alias when onboarding older records.
+- `checkout_path` is a namespace path inside the project rootfs, not a host-internal path.
 - The exact storage location can evolve, but the configuration shape should stay explicit and file-backed.
 
 ## Working Filesystem Layout
@@ -188,6 +185,14 @@ Namespace usage around that workspace:
 - `/nodes/...` only when additional mounted capabilities are needed
 
 The important rule is that all agent-facing paths remain canonical namespace paths. No internal mountpoint paths should leak into prompts, state, or operator messages.
+
+Current control surface in the feature branch:
+
+- `/global/pr_review/control/configure_repo.json`
+- `/global/pr_review/control/get_repo.json`
+- `/global/pr_review/control/list_repos.json`
+
+Those operations own the canonical `repos.json` file under `/nodes/local/fs/pr-review/state/repos.json`.
 
 ## Persistent State Model
 

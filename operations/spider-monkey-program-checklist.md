@@ -57,6 +57,11 @@ Status legend:
   - [x] Surface PR Review-specific artifacts and outcomes in SpiderApp.
   - [x] Add seeded PR Review eval scenarios covering intake, validation success, validation failure, happy-path service orchestration/publication, and checkout-failure propagation.
   - [x] Add `github_pr ingest_event` automation so provider events emit `/global/events/sources/agent/github_pr.json` and auto-create or reuse the matching `pr_review` mission.
+  - [x] Add file-backed PR Review repo onboarding through `/global/pr_review/control/configure_repo.json`, `get_repo.json`, and `list_repos.json`, backed by `/nodes/local/fs/pr-review/state/repos.json`.
+  - [x] Make `github_pr ingest_event` consume configured repo defaults for auto-intake and mission bootstrap whenever the event payload does not override them.
+  - [x] Add a runtime-server agentic eval that drives repo onboarding plus config-backed PR intake over Acheron strict-mode filesystem tools.
+  - [x] Add `/global/pr_review/control/advance.json` as the deterministic runner step so Spider Monkey can resume missions, wait on the shared event feed, and advance sync/validation without hard-coding review judgment into the kernel.
+  - [x] Add `/global/pr_review/control/save_draft.json` plus draft revision artifacts so Spider Monkey can keep evolving findings and recommendation drafts inside the workspace between events.
 
 ## Definition of done for this checklist
 
