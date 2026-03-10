@@ -56,6 +56,7 @@ Status legend:
   - [x] Add deeper PR Review runner/orchestration on top of that venom and contract.
   - [x] Surface PR Review-specific artifacts and outcomes in SpiderApp.
   - [x] Add seeded PR Review eval scenarios covering intake, validation success, validation failure, happy-path service orchestration/publication, and checkout-failure propagation.
+  - [x] Add `github_pr ingest_event` automation so provider events emit `/global/events/sources/agent/github_pr.json` and auto-create or reuse the matching `pr_review` mission.
 
 ## Definition of done for this checklist
 

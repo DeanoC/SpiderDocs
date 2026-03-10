@@ -105,6 +105,7 @@ PR Review specifics such as repo identity, PR metadata, review findings, validat
 
 The use case entrypoint should be a dedicated Venom layered above the generic mission Venom:
 
+- `/global/github_pr/control/ingest_event.json` normalizes a GitHub PR event, emits `/global/events/sources/agent/github_pr.json`, and auto-creates or reuses the matching `pr_review` mission using a stable run id
 - `/global/pr_review/control/intake.json` manually loads one provider PR into a fresh mission, bootstraps the contract files, and can persist an initial provider sync capture
 - `/global/pr_review/control/start.json` creates the mission, derives contract paths, and bootstraps the initial context/state files
 - `/global/pr_review/control/sync.json` updates the PR state file and can orchestrate provider sync, checkout sync, repo status capture, and diff capture through the underlying `github_pr` and `git` Venoms while persisting durable service snapshots under the review `artifact_root`
@@ -252,10 +253,11 @@ The implementation should normalize incoming signals into a small event set:
 Suggested event flow:
 
 1. GitHub adapter receives a webhook, poll result, or CLI query result.
-2. Adapter writes a normalized event into the project event intake path or equivalent task file.
-3. PR Review sub-brain waits using `/global/events/control/wait.json`.
-4. Matching event wakes the task and loads current PR state.
-5. Task decides whether the event is new work, superseded work, or ignorable noise.
+2. Adapter writes the event to `/global/github_pr/control/ingest_event.json`.
+3. `github_pr` normalizes the event, emits it on `/global/events/sources/agent/github_pr.json`, and auto-creates or reuses the matching `pr_review` mission.
+4. PR Review sub-brain waits using `/global/events/control/wait.json`.
+5. Matching event wakes the task and loads current PR state.
+6. Task decides whether the event is new work, superseded work, or ignorable noise.
 
 The design should prefer idempotent handling because GitHub events can repeat or arrive out of order.
 
