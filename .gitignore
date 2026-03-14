@@ -6,3 +6,6 @@ Thumbs.db
 .obsidian/workspace.json
 .obsidian/cache/
 .obsidian/snapshots/
+
+# Local private notes
+Private/
